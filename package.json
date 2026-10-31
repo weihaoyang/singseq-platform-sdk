@@ -1,0 +1,36 @@
+{
+  "name": "@singseq/platform-sdk",
+  "version": "1.0.0",
+  "description": "Typed TypeScript client for the SingSeq platform API",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "generate": "openapi-typescript openapi.json -o src/schema.d.ts",
+    "prepare": "npm run build"
+  },
+  "keywords": ["singseq", "platform", "sdk", "oauth", "billing"],
+  "license": "MIT",
+  "dependencies": {
+    "openapi-fetch": "^0.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "openapi-typescript": "^7.13.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.0.0"
+  }
+}

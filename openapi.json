@@ -1,0 +1,6727 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SingSeq Platform",
+    "version": "1.0.0-dev"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ready": {
+      "get": {
+        "summary": "Ready",
+        "operationId": "readiness",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "get": {
+        "summary": "Login",
+        "operationId": "startLogin",
+        "parameters": [
+          {
+            "name": "return_path",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "/",
+              "title": "Return Path"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/callback": {
+      "get": {
+        "summary": "Callback",
+        "operationId": "completeLogin",
+        "parameters": [
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/session": {
+      "get": {
+        "summary": "Session Info",
+        "operationId": "getSession",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "summary": "Refresh Session",
+        "operationId": "refreshSession",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "summary": "Logout",
+        "operationId": "logoutSession",
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/subject": {
+      "post": {
+        "summary": "Switch",
+        "operationId": "switchSubject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SwitchInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/me": {
+      "get": {
+        "summary": "Me",
+        "operationId": "getAccount",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/tokens": {
+      "post": {
+        "summary": "Personal Token",
+        "operationId": "createPersonalToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalTokenView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/credentials": {
+      "get": {
+        "summary": "Credentials",
+        "operationId": "listCredentials",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CredentialView"
+                  },
+                  "type": "array",
+                  "title": "Response Listcredentials"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/credentials/{credential_id}": {
+      "delete": {
+        "summary": "Revoke",
+        "operationId": "revokeCredential",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "credential_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Credential Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subjects": {
+      "post": {
+        "summary": "Subject",
+        "operationId": "createSubject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedSubjectView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/usage/reservations": {
+      "post": {
+        "summary": "Reserve",
+        "operationId": "reserveUsage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReservationInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReservationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/usage/reservations/{reservation_id}/consume": {
+      "post": {
+        "summary": "Consume",
+        "operationId": "consumeUsage",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Reservation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReservationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/usage/reservations/{reservation_id}/release": {
+      "post": {
+        "summary": "Release",
+        "operationId": "releaseUsage",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Reservation Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReservationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subjects/{subject_id}/benefit-access": {
+      "get": {
+        "summary": "Subject Benefit Access",
+        "operationId": "listSubjectBenefitAccess",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BenefitAccessView"
+                  },
+                  "title": "Response Listsubjectbenefitaccess"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subjects/{subject_id}/benefit-access/{subscription_id}": {
+      "put": {
+        "summary": "Set Benefit Access",
+        "operationId": "setSubjectBenefitAccess",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          },
+          {
+            "name": "subscription_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Subscription Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BenefitAccessInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/profile": {
+      "put": {
+        "summary": "Profile",
+        "operationId": "updateProfile",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subjects/{subject_id}/members": {
+      "get": {
+        "summary": "Members",
+        "operationId": "listMembers",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MemberView"
+                  },
+                  "title": "Response Listmembers"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subjects/{subject_id}": {
+      "put": {
+        "summary": "Update Subject",
+        "operationId": "updateSubject",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subjects/{subject_id}/invitations": {
+      "post": {
+        "summary": "Invite",
+        "operationId": "inviteMember",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Invitations",
+        "operationId": "listInvitations",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvitationRecordView"
+                  },
+                  "title": "Response Listinvitations"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subjects/{subject_id}/invitations/{invitation_id}": {
+      "delete": {
+        "summary": "Revoke Invitation",
+        "operationId": "revokeInvitation",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          },
+          {
+            "name": "invitation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invitation Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invitations/{secret}": {
+      "get": {
+        "summary": "Inspect Invitation",
+        "operationId": "getInvitation",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "secret",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Secret"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationPreview"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/invitations/{secret}/accept": {
+      "post": {
+        "summary": "Accept Invitation",
+        "operationId": "acceptInvitation",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "secret",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Secret"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcceptedInvitation"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subjects/{subject_id}/members/{user_id}": {
+      "put": {
+        "summary": "Change Member",
+        "operationId": "changeMemberRole",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove Member",
+        "operationId": "removeMember",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/subjects/{subject_id}/close": {
+      "post": {
+        "summary": "Close Subject",
+        "operationId": "closeSubject",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subject_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Subject Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloseInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/deletion": {
+      "get": {
+        "summary": "Deletion Status",
+        "operationId": "getDeletionStatus",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Request Deletion",
+        "operationId": "requestDeletion",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeletionInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Cancel Deletion",
+        "operationId": "cancelDeletion",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/notifications": {
+      "get": {
+        "summary": "Notifications",
+        "operationId": "listNotifications",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationsView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/account/notifications/read": {
+      "post": {
+        "summary": "Read Notifications",
+        "operationId": "readNotifications",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "notification_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Notification Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/policies": {
+      "get": {
+        "summary": "Get Policies",
+        "operationId": "getPolicies",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PolicyView"
+                  },
+                  "type": "array",
+                  "title": "Response Getpolicies"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/policies": {
+      "post": {
+        "summary": "Publish Policy",
+        "operationId": "publishPolicy",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/consents": {
+      "get": {
+        "summary": "Consents",
+        "operationId": "getConsents",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ConsentView"
+                  },
+                  "type": "array",
+                  "title": "Response Getconsents"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Accept Policies",
+        "operationId": "acceptPolicies",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsentInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ConsentView"
+                  },
+                  "type": "array",
+                  "title": "Response Acceptpolicies"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/export": {
+      "get": {
+        "summary": "Export Account",
+        "operationId": "exportAccount",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/catalog": {
+      "get": {
+        "summary": "Catalog",
+        "operationId": "getCatalog",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PlanView"
+                  },
+                  "type": "array",
+                  "title": "Response Getcatalog"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/billing/benefits": {
+      "get": {
+        "summary": "List Benefits",
+        "operationId": "listPlanBenefits",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BenefitInput"
+                  },
+                  "type": "array",
+                  "title": "Response Listplanbenefits"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Publish Benefit",
+        "operationId": "publishPlanBenefit",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BenefitInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/billing/plans": {
+      "get": {
+        "summary": "List Plans",
+        "operationId": "listBillingPlans",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PlanView"
+                  },
+                  "type": "array",
+                  "title": "Response Listbillingplans"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/usage/balance": {
+      "get": {
+        "summary": "Balance",
+        "operationId": "getUsageBalance",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Product Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UsageBalanceView"
+                  },
+                  "title": "Response Getusagebalance"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/billing/catalog": {
+      "get": {
+        "summary": "Export Catalog",
+        "operationId": "exportBillingCatalog",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Publish Catalog",
+        "operationId": "publishBillingCatalog",
+        "requestBody": {
+          "content": {
+            "text/xml": {
+              "schema": {
+                "type": "string",
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/billing/catalog/validate": {
+      "post": {
+        "summary": "Validate Catalog",
+        "operationId": "validateBillingCatalog",
+        "requestBody": {
+          "content": {
+            "text/xml": {
+              "schema": {
+                "type": "string",
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogValidationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/account": {
+      "get": {
+        "summary": "Account",
+        "operationId": "getBillingAccount",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillingAccountView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update Billing Profile",
+        "operationId": "updateBillingProfile",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillingProfile"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/subscriptions": {
+      "get": {
+        "summary": "Subscriptions",
+        "operationId": "listBillingSubscriptions",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/BundleView"
+                  },
+                  "type": "array",
+                  "title": "Response Listbillingsubscriptions"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Subscribe",
+        "operationId": "createBillingSubscription",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/overdue": {
+      "get": {
+        "summary": "Overdue",
+        "operationId": "getBillingOverdue",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OverdueView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/bundles/{bundle_id}": {
+      "put": {
+        "summary": "Bundle State",
+        "operationId": "setBillingBundleState",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "bundle_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Bundle Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BundleStateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/billing/overdue": {
+      "get": {
+        "summary": "Export Overdue",
+        "operationId": "exportBillingOverdue",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/xml": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Publish Overdue",
+        "operationId": "publishBillingOverdue",
+        "requestBody": {
+          "content": {
+            "text/xml": {
+              "schema": {
+                "type": "string",
+                "title": "Body"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/subscriptions/{subscription_id}": {
+      "put": {
+        "summary": "Change Plan",
+        "operationId": "changeBillingPlan",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subscription_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Subscription Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePlan"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Cancel",
+        "operationId": "cancelBillingSubscription",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subscription_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Subscription Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/billing/invoices": {
+      "get": {
+        "summary": "Invoices",
+        "operationId": "listBillingInvoices",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/InvoiceView"
+                  },
+                  "type": "array",
+                  "title": "Response Listbillinginvoices"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/invoices/export": {
+      "get": {
+        "summary": "Export Invoices",
+        "operationId": "exportBillingInvoices",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/invoices/{invoice_id}/document": {
+      "get": {
+        "summary": "Invoice Document",
+        "operationId": "downloadBillingInvoice",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Invoice Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/billing/payments": {
+      "get": {
+        "summary": "Payments",
+        "operationId": "listBillingPayments",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PaymentView"
+                  },
+                  "type": "array",
+                  "title": "Response Listbillingpayments"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/payment-methods": {
+      "get": {
+        "summary": "Payment Methods",
+        "operationId": "listBillingPaymentMethods",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/billing/invoices/{invoice_id}/pay": {
+      "post": {
+        "summary": "Pay",
+        "operationId": "payBillingInvoice",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Invoice Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckoutView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/billing/payments/{payment_id}/refunds": {
+      "post": {
+        "summary": "Refund",
+        "operationId": "refundBillingPayment",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "payment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Payment Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "summary": "Owned Products",
+        "operationId": "listOwnedProducts",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProductView"
+                  },
+                  "type": "array",
+                  "title": "Response Listownedproducts"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/products/applications": {
+      "get": {
+        "summary": "Applications",
+        "operationId": "listProductApplications",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProductApplicationView"
+                  },
+                  "type": "array",
+                  "title": "Response Listproductapplications"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Apply Product",
+        "operationId": "applyProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductApplicationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/products/applications": {
+      "get": {
+        "summary": "Pending Products",
+        "operationId": "listPendingProducts",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProductApplicationView"
+                  },
+                  "type": "array",
+                  "title": "Response Listpendingproducts"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/products/applications/{application_id}/review": {
+      "post": {
+        "summary": "Review Product",
+        "operationId": "reviewProductApplication",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Application Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Review"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductApplicationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/applications/{application_id}": {
+      "delete": {
+        "summary": "Cancel Application",
+        "operationId": "cancelProductApplication",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Application Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{product_code}": {
+      "put": {
+        "summary": "Product State",
+        "operationId": "setProductVisibility",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Product Code"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{product_code}/transfer": {
+      "post": {
+        "summary": "Transfer Product",
+        "operationId": "transferProduct",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Product Code"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transfer"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{product_code}/credentials": {
+      "post": {
+        "summary": "Issue Service Key",
+        "operationId": "issueServiceCredential",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Product Code"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CredentialInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IssuedSecretView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Service Keys",
+        "operationId": "listServiceCredentials",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Product Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CredentialView"
+                  },
+                  "title": "Response Listservicecredentials"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{product_code}/credentials/{credential_id}": {
+      "delete": {
+        "summary": "Revoke Service Key",
+        "operationId": "revokeServiceCredential",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Product Code"
+            }
+          },
+          {
+            "name": "credential_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Credential Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/service/product": {
+      "get": {
+        "summary": "Service Product",
+        "operationId": "getServiceProduct",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/service/usage/{reservation_id}/finish": {
+      "post": {
+        "summary": "Finish Service Usage",
+        "operationId": "finishServiceUsage",
+        "security": [
+          {
+            "PlatformBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reservation_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Reservation Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Finish"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/audit": {
+      "get": {
+        "summary": "Audit",
+        "operationId": "listAuditEvents",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "actor_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Actor Id"
+            }
+          },
+          {
+            "name": "subject_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Subject Id"
+            }
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Action"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditView"
+                  },
+                  "title": "Response Listauditevents"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ops/runtime": {
+      "get": {
+        "summary": "Runtime",
+        "operationId": "getOperationsRuntime",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RuntimeView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/operators": {
+      "get": {
+        "summary": "Operators",
+        "operationId": "listOperators",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperatorDirectoryView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/ops/operators/{user_id}": {
+      "put": {
+        "summary": "Set Operator",
+        "operationId": "setOperatorPermissions",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OperatorInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Revoke Operator",
+        "operationId": "revokeOperator",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{product_code}/oauth-clients": {
+      "get": {
+        "summary": "Clients",
+        "operationId": "listOAuthClients",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Product Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OAuthClientView"
+                  },
+                  "title": "Response Listoauthclients"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Register",
+        "operationId": "registerOAuthClient",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Product Code"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisteredClientView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products/{product_code}/oauth-clients/{client_id}": {
+      "put": {
+        "summary": "Client State",
+        "operationId": "setOAuthClientState",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "product_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Product Code"
+            }
+          },
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientState"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/authorize": {
+      "get": {
+        "summary": "Authorize",
+        "operationId": "startProductAuthorization",
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Client Id"
+            }
+          },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Redirect Uri"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scope"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "State"
+            }
+          },
+          {
+            "name": "code_challenge",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code Challenge"
+            }
+          },
+          {
+            "name": "response_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "code",
+              "title": "Response Type"
+            }
+          },
+          {
+            "name": "code_challenge_method",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "S256",
+              "title": "Code Challenge Method"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/requests/{request_id}": {
+      "get": {
+        "summary": "Inspect Authorization",
+        "operationId": "getProductAuthorization",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/requests/{request_id}/decision": {
+      "post": {
+        "summary": "Decision",
+        "operationId": "answerProductAuthorization",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Request Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Decision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationRedirect"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/token": {
+      "post": {
+        "summary": "Token",
+        "operationId": "exchangeProductToken",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/device/authorize": {
+      "post": {
+        "summary": "Start Device",
+        "operationId": "startDeviceAuthorization",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/device/requests/{user_code}": {
+      "get": {
+        "summary": "Inspect Device",
+        "operationId": "getDeviceAuthorization",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceAuthorizationView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/device/requests/{user_code}/decision": {
+      "post": {
+        "summary": "Decide Device",
+        "operationId": "answerDeviceAuthorization",
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "User Code"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Decision"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/revoke": {
+      "post": {
+        "summary": "Revoke",
+        "operationId": "revokeProductToken",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/oauth/userinfo": {
+      "get": {
+        "summary": "Userinfo",
+        "operationId": "getProductProfile",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/api/v1/account/devices": {
+      "get": {
+        "summary": "Devices",
+        "operationId": "listAuthorizedDevices",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "PlatformBearer": []
+          },
+          {
+            "PlatformSession": []
+          }
+        ]
+      }
+    },
+    "/.well-known/oauth-authorization-server": {
+      "get": {
+        "summary": "Metadata",
+        "operationId": "oauthMetadata",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AcceptedInvitation": {
+        "properties": {
+          "subject_id": {
+            "type": "string",
+            "title": "Subject Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subject_id"
+        ],
+        "title": "AcceptedInvitation"
+      },
+      "AccountView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/Preferences"
+          },
+          "deletion_requested_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deletion Requested At"
+          },
+          "deletion_due_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deletion Due At"
+          },
+          "subject_id": {
+            "type": "string",
+            "title": "Subject Id"
+          },
+          "subjects": {
+            "items": {
+              "$ref": "#/components/schemas/SubjectView"
+            },
+            "type": "array",
+            "title": "Subjects"
+          },
+          "permissions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Permissions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "email",
+          "preferences",
+          "deletion_requested_at",
+          "deletion_due_at",
+          "subject_id",
+          "subjects",
+          "permissions"
+        ],
+        "title": "AccountView"
+      },
+      "ApplicationInput": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{2,63}$",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 10000,
+            "title": "Description"
+          },
+          "web_origin": {
+            "type": "string",
+            "maxLength": 300,
+            "title": "Web Origin"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "description",
+          "web_origin"
+        ],
+        "title": "ApplicationInput"
+      },
+      "AuditView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actor Id"
+          },
+          "subject_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject Id"
+          },
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "data": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Data"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "actor_id",
+          "subject_id",
+          "action",
+          "data",
+          "created_at"
+        ],
+        "title": "AuditView"
+      },
+      "AuthorizationRedirect": {
+        "properties": {
+          "redirect_uri": {
+            "type": "string",
+            "title": "Redirect Uri"
+          }
+        },
+        "type": "object",
+        "required": [
+          "redirect_uri"
+        ],
+        "title": "AuthorizationRedirect"
+      },
+      "AuthorizationView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "client_name": {
+            "type": "string",
+            "title": "Client Name"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "redirect_uri": {
+            "type": "string",
+            "title": "Redirect Uri"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "client_name",
+          "scopes",
+          "redirect_uri",
+          "expires_at"
+        ],
+        "title": "AuthorizationView"
+      },
+      "BenefitAccessInput": {
+        "properties": {
+          "member_scope": {
+            "type": "string",
+            "enum": [
+              "all",
+              "selected"
+            ],
+            "title": "Member Scope"
+          },
+          "user_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "User Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "member_scope"
+        ],
+        "title": "BenefitAccessInput"
+      },
+      "BenefitAccessView": {
+        "properties": {
+          "member_scope": {
+            "type": "string",
+            "enum": [
+              "all",
+              "selected"
+            ],
+            "title": "Member Scope"
+          },
+          "user_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "User Ids"
+          },
+          "subscription_id": {
+            "type": "string",
+            "title": "Subscription Id"
+          },
+          "plan_name": {
+            "type": "string",
+            "title": "Plan Name"
+          },
+          "product_name": {
+            "type": "string",
+            "title": "Product Name"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "member_scope",
+          "user_ids",
+          "subscription_id",
+          "plan_name",
+          "product_name",
+          "state"
+        ],
+        "title": "BenefitAccessView"
+      },
+      "BenefitInput": {
+        "properties": {
+          "plan_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Plan Name"
+          },
+          "product_code": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Product Code"
+          },
+          "metric": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Metric"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "billing_unit": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 80,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Billing Unit"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan_name",
+          "product_code",
+          "metric"
+        ],
+        "title": "BenefitInput"
+      },
+      "BillingAccountView": {
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "title": "Accountid"
+          },
+          "externalKey": {
+            "type": "string",
+            "title": "Externalkey"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "accountBalance": {
+            "type": "number",
+            "title": "Accountbalance"
+          },
+          "accountCBA": {
+            "type": "number",
+            "title": "Accountcba"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/BillingProfile"
+          }
+        },
+        "type": "object",
+        "required": [
+          "accountId",
+          "externalKey",
+          "name",
+          "currency",
+          "accountBalance",
+          "accountCBA",
+          "profile"
+        ],
+        "title": "BillingAccountView"
+      },
+      "BillingProfile": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "company": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 160
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Company"
+          },
+          "email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 254,
+                "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Email"
+          },
+          "phone": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Phone"
+          },
+          "address1": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address1"
+          },
+          "address2": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address2"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State"
+          },
+          "country": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Country"
+          },
+          "postalCode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 32
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Postalcode"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "BillingProfile"
+      },
+      "BundleStateInput": {
+        "properties": {
+          "paused": {
+            "type": "boolean",
+            "title": "Paused"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "paused"
+        ],
+        "title": "BundleStateInput"
+      },
+      "BundleView": {
+        "properties": {
+          "bundleId": {
+            "type": "string",
+            "title": "Bundleid"
+          },
+          "subscriptions": {
+            "items": {
+              "$ref": "#/components/schemas/SubscriptionView"
+            },
+            "type": "array",
+            "title": "Subscriptions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bundleId",
+          "subscriptions"
+        ],
+        "title": "BundleView"
+      },
+      "CatalogBlockView": {
+        "properties": {
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "size": {
+            "type": "string",
+            "title": "Size"
+          },
+          "max": {
+            "type": "string",
+            "title": "Max"
+          },
+          "prices": {
+            "items": {
+              "$ref": "#/components/schemas/PlanPriceView"
+            },
+            "type": "array",
+            "title": "Prices"
+          }
+        },
+        "type": "object",
+        "required": [
+          "unit",
+          "size",
+          "max",
+          "prices"
+        ],
+        "title": "CatalogBlockView"
+      },
+      "CatalogDurationView": {
+        "properties": {
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "number": {
+            "type": "integer",
+            "title": "Number"
+          }
+        },
+        "type": "object",
+        "required": [
+          "unit",
+          "number"
+        ],
+        "title": "CatalogDurationView"
+      },
+      "CatalogLimitView": {
+        "properties": {
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "min": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min"
+          },
+          "max": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max"
+          }
+        },
+        "type": "object",
+        "required": [
+          "unit",
+          "min",
+          "max"
+        ],
+        "title": "CatalogLimitView"
+      },
+      "CatalogPhaseView": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "prices": {
+            "items": {
+              "$ref": "#/components/schemas/PlanPriceView"
+            },
+            "type": "array",
+            "title": "Prices"
+          },
+          "fixedPrices": {
+            "items": {
+              "$ref": "#/components/schemas/PlanPriceView"
+            },
+            "type": "array",
+            "title": "Fixedprices"
+          },
+          "duration": {
+            "$ref": "#/components/schemas/CatalogDurationView"
+          },
+          "usages": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogUsageView"
+            },
+            "type": "array",
+            "title": "Usages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "prices",
+          "fixedPrices",
+          "duration",
+          "usages"
+        ],
+        "title": "CatalogPhaseView"
+      },
+      "CatalogTierView": {
+        "properties": {
+          "blocks": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogBlockView"
+            },
+            "type": "array",
+            "title": "Blocks"
+          },
+          "limits": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogLimitView"
+            },
+            "type": "array",
+            "title": "Limits"
+          },
+          "fixedPrice": {
+            "items": {
+              "$ref": "#/components/schemas/PlanPriceView"
+            },
+            "type": "array",
+            "title": "Fixedprice"
+          },
+          "recurringPrice": {
+            "items": {
+              "$ref": "#/components/schemas/PlanPriceView"
+            },
+            "type": "array",
+            "title": "Recurringprice"
+          }
+        },
+        "type": "object",
+        "required": [
+          "blocks",
+          "limits",
+          "fixedPrice",
+          "recurringPrice"
+        ],
+        "title": "CatalogTierView"
+      },
+      "CatalogUsageView": {
+        "properties": {
+          "billingPeriod": {
+            "type": "string",
+            "title": "Billingperiod"
+          },
+          "tiers": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogTierView"
+            },
+            "type": "array",
+            "title": "Tiers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "billingPeriod",
+          "tiers"
+        ],
+        "title": "CatalogUsageView"
+      },
+      "CatalogValidationErrorView": {
+        "properties": {
+          "errorDescription": {
+            "type": "string",
+            "title": "Errordescription"
+          }
+        },
+        "type": "object",
+        "required": [
+          "errorDescription"
+        ],
+        "title": "CatalogValidationErrorView"
+      },
+      "CatalogValidationView": {
+        "properties": {
+          "catalogValidationErrors": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogValidationErrorView"
+            },
+            "type": "array",
+            "title": "Catalogvalidationerrors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "catalogValidationErrors"
+        ],
+        "title": "CatalogValidationView"
+      },
+      "ChangePlan": {
+        "properties": {
+          "plan_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Plan Name"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan_name"
+        ],
+        "title": "ChangePlan"
+      },
+      "CheckoutView": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "payment_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Payment Id"
+          },
+          "transaction_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Transaction Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "url",
+          "payment_id",
+          "transaction_id"
+        ],
+        "title": "CheckoutView"
+      },
+      "ClientInput": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "redirect_uris": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Redirect Uris"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "minItems": 1,
+            "title": "Scopes"
+          },
+          "confidential": {
+            "type": "boolean",
+            "title": "Confidential"
+          },
+          "device_enabled": {
+            "type": "boolean",
+            "title": "Device Enabled",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "redirect_uris",
+          "scopes",
+          "confidential"
+        ],
+        "title": "ClientInput"
+      },
+      "ClientState": {
+        "properties": {
+          "active": {
+            "type": "boolean",
+            "title": "Active"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "active"
+        ],
+        "title": "ClientState"
+      },
+      "CloseInput": {
+        "properties": {
+          "confirm": {
+            "type": "boolean",
+            "const": true,
+            "title": "Confirm"
+          },
+          "forfeit_value": {
+            "type": "boolean",
+            "title": "Forfeit Value",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "confirm"
+        ],
+        "title": "CloseInput"
+      },
+      "ConsentInput": {
+        "properties": {
+          "policy_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Policy Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "policy_ids"
+        ],
+        "title": "ConsentInput"
+      },
+      "ConsentView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "required": {
+            "type": "boolean",
+            "title": "Required"
+          },
+          "accepted_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accepted At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "version",
+          "title",
+          "required",
+          "accepted_at"
+        ],
+        "title": "ConsentView"
+      },
+      "CreatedSubjectView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "kind"
+        ],
+        "title": "CreatedSubjectView"
+      },
+      "CredentialInput": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Label"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "days": {
+            "type": "integer",
+            "maximum": 365.0,
+            "minimum": 1.0,
+            "title": "Days"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "label",
+          "scopes",
+          "days"
+        ],
+        "title": "CredentialInput"
+      },
+      "CredentialView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          },
+          "revoked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revoked At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "label",
+          "scopes",
+          "expires_at",
+          "revoked_at"
+        ],
+        "title": "CredentialView"
+      },
+      "Decision": {
+        "properties": {
+          "approve": {
+            "type": "boolean",
+            "title": "Approve"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "approve"
+        ],
+        "title": "Decision"
+      },
+      "DeletionInput": {
+        "properties": {
+          "confirm": {
+            "type": "boolean",
+            "const": true,
+            "title": "Confirm"
+          },
+          "forfeit_value": {
+            "type": "boolean",
+            "title": "Forfeit Value",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "confirm"
+        ],
+        "title": "DeletionInput"
+      },
+      "DeviceAuthorizationView": {
+        "properties": {
+          "client_name": {
+            "type": "string",
+            "title": "Client Name"
+          },
+          "device_name": {
+            "type": "string",
+            "title": "Device Name"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_name",
+          "device_name",
+          "scopes",
+          "expires_at"
+        ],
+        "title": "DeviceAuthorizationView"
+      },
+      "Finish": {
+        "properties": {
+          "consume": {
+            "type": "boolean",
+            "title": "Consume"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "consume"
+        ],
+        "title": "Finish"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InvitationPreview": {
+        "properties": {
+          "subject_name": {
+            "type": "string",
+            "title": "Subject Name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          },
+          "accepted": {
+            "type": "boolean",
+            "title": "Accepted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subject_name",
+          "role",
+          "expires_at",
+          "accepted"
+        ],
+        "title": "InvitationPreview"
+      },
+      "InvitationRecordView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "target_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Id"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          },
+          "accepted_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accepted At"
+          },
+          "revoked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revoked At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "role",
+          "target_id",
+          "expires_at",
+          "accepted_at",
+          "revoked_at"
+        ],
+        "title": "InvitationRecordView"
+      },
+      "InvitationView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "join_path": {
+            "type": "string",
+            "title": "Join Path"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "join_path",
+          "expires_at"
+        ],
+        "title": "InvitationView"
+      },
+      "InviteInput": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "admin",
+              "member"
+            ],
+            "title": "Role",
+            "default": "member"
+          },
+          "target_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "InviteInput"
+      },
+      "InvoiceItemView": {
+        "properties": {
+          "invoiceItemId": {
+            "type": "string",
+            "title": "Invoiceitemid"
+          },
+          "itemType": {
+            "type": "string",
+            "title": "Itemtype"
+          },
+          "subscriptionId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subscriptionid"
+          },
+          "planName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Planname"
+          },
+          "amount": {
+            "type": "number",
+            "title": "Amount"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          }
+        },
+        "type": "object",
+        "required": [
+          "invoiceItemId",
+          "itemType",
+          "subscriptionId",
+          "planName",
+          "amount",
+          "currency"
+        ],
+        "title": "InvoiceItemView"
+      },
+      "InvoiceView": {
+        "properties": {
+          "invoiceId": {
+            "type": "string",
+            "title": "Invoiceid"
+          },
+          "invoiceDate": {
+            "type": "string",
+            "title": "Invoicedate"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "amount": {
+            "type": "number",
+            "title": "Amount"
+          },
+          "balance": {
+            "type": "number",
+            "title": "Balance"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InvoiceItemView"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "invoiceId",
+          "invoiceDate",
+          "status",
+          "amount",
+          "balance",
+          "currency",
+          "items"
+        ],
+        "title": "InvoiceView"
+      },
+      "IssuedSecretView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "secret": {
+            "type": "string",
+            "title": "Secret"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "secret",
+          "expires_at"
+        ],
+        "title": "IssuedSecretView"
+      },
+      "MemberView": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "name",
+          "role"
+        ],
+        "title": "MemberView"
+      },
+      "NotificationView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "topic": {
+            "type": "string",
+            "title": "Topic"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "body": {
+            "type": "string",
+            "title": "Body"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "read_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Read At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "topic",
+          "title",
+          "body",
+          "created_at",
+          "read_at"
+        ],
+        "title": "NotificationView"
+      },
+      "NotificationsView": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/NotificationView"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_offset": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "next_offset"
+        ],
+        "title": "NotificationsView"
+      },
+      "OAuthClientView": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "title": "Client Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "product_code": {
+            "type": "string",
+            "title": "Product Code"
+          },
+          "redirect_uris": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Redirect Uris"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active"
+          },
+          "device_enabled": {
+            "type": "boolean",
+            "title": "Device Enabled"
+          },
+          "confidential": {
+            "type": "boolean",
+            "title": "Confidential"
+          },
+          "retired_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retired At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "name",
+          "product_code",
+          "redirect_uris",
+          "scopes",
+          "active",
+          "device_enabled",
+          "confidential",
+          "retired_at"
+        ],
+        "title": "OAuthClientView"
+      },
+      "OperatorDirectoryView": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OperatorView"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "available_permissions": {
+            "items": {
+              "$ref": "#/components/schemas/OperatorPermission"
+            },
+            "type": "array",
+            "title": "Available Permissions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "available_permissions"
+        ],
+        "title": "OperatorDirectoryView"
+      },
+      "OperatorInput": {
+        "properties": {
+          "permissions": {
+            "items": {
+              "$ref": "#/components/schemas/OperatorPermission"
+            },
+            "type": "array",
+            "title": "Permissions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "permissions"
+        ],
+        "title": "OperatorInput"
+      },
+      "OperatorPermission": {
+        "type": "string",
+        "enum": [
+          "catalog.write",
+          "products.review",
+          "oauth.write",
+          "policies.write",
+          "billing.refund.execute",
+          "operations.read",
+          "operators.manage"
+        ],
+        "title": "OperatorPermission"
+      },
+      "OperatorView": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "permissions": {
+            "items": {
+              "$ref": "#/components/schemas/OperatorPermission"
+            },
+            "type": "array",
+            "title": "Permissions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "name",
+          "permissions"
+        ],
+        "title": "OperatorView"
+      },
+      "OverdueView": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "externalMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Externalmessage"
+          },
+          "isDisableEntitlementAndChangesBlocked": {
+            "type": "boolean",
+            "title": "Isdisableentitlementandchangesblocked"
+          },
+          "isBlockChanges": {
+            "type": "boolean",
+            "title": "Isblockchanges"
+          },
+          "isClearState": {
+            "type": "boolean",
+            "title": "Isclearstate"
+          },
+          "reevaluationIntervalDays": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reevaluationintervaldays"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "externalMessage",
+          "isDisableEntitlementAndChangesBlocked",
+          "isBlockChanges",
+          "isClearState",
+          "reevaluationIntervalDays"
+        ],
+        "title": "OverdueView"
+      },
+      "PaymentInput": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "mobile": {
+            "type": "boolean",
+            "title": "Mobile",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id"
+        ],
+        "title": "PaymentInput"
+      },
+      "PaymentTransactionView": {
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "title": "Transactionid"
+          },
+          "transactionType": {
+            "type": "string",
+            "title": "Transactiontype"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "amount": {
+            "type": "number",
+            "title": "Amount"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          }
+        },
+        "type": "object",
+        "required": [
+          "transactionId",
+          "transactionType",
+          "status",
+          "amount",
+          "currency"
+        ],
+        "title": "PaymentTransactionView"
+      },
+      "PaymentView": {
+        "properties": {
+          "paymentId": {
+            "type": "string",
+            "title": "Paymentid"
+          },
+          "accountId": {
+            "type": "string",
+            "title": "Accountid"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "purchasedAmount": {
+            "type": "number",
+            "title": "Purchasedamount"
+          },
+          "refundedAmount": {
+            "type": "number",
+            "title": "Refundedamount"
+          },
+          "transactions": {
+            "items": {
+              "$ref": "#/components/schemas/PaymentTransactionView"
+            },
+            "type": "array",
+            "title": "Transactions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "paymentId",
+          "accountId",
+          "currency",
+          "purchasedAmount",
+          "refundedAmount",
+          "transactions"
+        ],
+        "title": "PaymentView"
+      },
+      "PersonalTokenView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "token",
+          "expires_at"
+        ],
+        "title": "PersonalTokenView"
+      },
+      "PlanPriceView": {
+        "properties": {
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "value": {
+            "type": "number",
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "currency",
+          "value"
+        ],
+        "title": "PlanPriceView"
+      },
+      "PlanView": {
+        "properties": {
+          "product": {
+            "type": "string",
+            "title": "Product"
+          },
+          "productPrettyName": {
+            "type": "string",
+            "title": "Productprettyname"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "prettyName": {
+            "type": "string",
+            "title": "Prettyname"
+          },
+          "billingPeriod": {
+            "type": "string",
+            "title": "Billingperiod"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "one_time",
+              "subscription",
+              "usage"
+            ],
+            "title": "Kind"
+          },
+          "phases": {
+            "items": {
+              "$ref": "#/components/schemas/CatalogPhaseView"
+            },
+            "type": "array",
+            "title": "Phases"
+          },
+          "benefits": {
+            "items": {
+              "$ref": "#/components/schemas/BenefitInput"
+            },
+            "type": "array",
+            "title": "Benefits"
+          }
+        },
+        "type": "object",
+        "required": [
+          "product",
+          "productPrettyName",
+          "name",
+          "prettyName",
+          "billingPeriod",
+          "kind",
+          "phases",
+          "benefits"
+        ],
+        "title": "PlanView"
+      },
+      "PolicyInput": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Code"
+          },
+          "version": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Version"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 200000,
+            "minLength": 1,
+            "title": "Content"
+          },
+          "required": {
+            "type": "boolean",
+            "title": "Required"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "version",
+          "title",
+          "content",
+          "required"
+        ],
+        "title": "PolicyInput"
+      },
+      "PolicyView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "required": {
+            "type": "boolean",
+            "title": "Required"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "version",
+          "title",
+          "content",
+          "required"
+        ],
+        "title": "PolicyView"
+      },
+      "Preferences": {
+        "properties": {
+          "language": {
+            "type": "string",
+            "enum": [
+              "zh-CN",
+              "en"
+            ],
+            "title": "Language",
+            "default": "zh-CN"
+          },
+          "theme": {
+            "type": "string",
+            "enum": [
+              "system",
+              "light",
+              "dark"
+            ],
+            "title": "Theme",
+            "default": "system"
+          },
+          "product_news": {
+            "type": "boolean",
+            "title": "Product News",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Preferences"
+      },
+      "ProductApplicationView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "owner_id": {
+            "type": "string",
+            "title": "Owner Id"
+          },
+          "web_origin": {
+            "type": "string",
+            "title": "Web Origin"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "review_evidence": {
+            "type": "string",
+            "title": "Review Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code",
+          "name",
+          "description",
+          "owner_id",
+          "web_origin",
+          "state",
+          "review_evidence"
+        ],
+        "title": "ProductApplicationView"
+      },
+      "ProductUpdate": {
+        "properties": {
+          "published": {
+            "type": "boolean",
+            "title": "Published"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "published"
+        ],
+        "title": "ProductUpdate"
+      },
+      "ProductView": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "web_origin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Web Origin"
+          },
+          "owner_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Id"
+          },
+          "published": {
+            "type": "boolean",
+            "title": "Published"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "description",
+          "web_origin",
+          "owner_id",
+          "published"
+        ],
+        "title": "ProductView"
+      },
+      "ProfileInput": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/Preferences"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "preferences"
+        ],
+        "title": "ProfileInput"
+      },
+      "RefundAdjustment": {
+        "properties": {
+          "invoice_item_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Invoice Item Id"
+          },
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Amount"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "invoice_item_id",
+          "amount"
+        ],
+        "title": "RefundAdjustment"
+      },
+      "RefundInput": {
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Amount"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Reason"
+          },
+          "adjustments": {
+            "items": {
+              "$ref": "#/components/schemas/RefundAdjustment"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Adjustments"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "amount",
+          "request_id",
+          "reason",
+          "adjustments"
+        ],
+        "title": "RefundInput"
+      },
+      "RegisteredClientView": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          },
+          "product_code": {
+            "type": "string",
+            "title": "Product Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "client_secret",
+          "product_code"
+        ],
+        "title": "RegisteredClientView"
+      },
+      "ReservationInput": {
+        "properties": {
+          "product_code": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Product Code"
+          },
+          "metric": {
+            "type": "string",
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Metric"
+          },
+          "quantity": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Quantity"
+          },
+          "idempotency_key": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 32,
+            "title": "Idempotency Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "product_code",
+          "metric",
+          "quantity",
+          "idempotency_key"
+        ],
+        "title": "ReservationInput"
+      },
+      "ReservationView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "product_code": {
+            "type": "string",
+            "title": "Product Code"
+          },
+          "metric": {
+            "type": "string",
+            "title": "Metric"
+          },
+          "quantity": {
+            "type": "integer",
+            "title": "Quantity"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "product_code",
+          "metric",
+          "quantity",
+          "state",
+          "expires_at"
+        ],
+        "title": "ReservationView"
+      },
+      "Review": {
+        "properties": {
+          "approve": {
+            "type": "boolean",
+            "title": "Approve"
+          },
+          "evidence": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "approve",
+          "evidence"
+        ],
+        "title": "Review"
+      },
+      "RoleInput": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "member"
+            ],
+            "title": "Role"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "role"
+        ],
+        "title": "RoleInput"
+      },
+      "RuntimeView": {
+        "properties": {
+          "checked_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Checked At"
+          },
+          "billing_available": {
+            "type": "boolean",
+            "title": "Billing Available"
+          },
+          "pending_usage_deliveries": {
+            "type": "integer",
+            "title": "Pending Usage Deliveries"
+          },
+          "oldest_pending_usage_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Oldest Pending Usage At"
+          },
+          "active_reservations": {
+            "type": "integer",
+            "title": "Active Reservations"
+          },
+          "pending_product_applications": {
+            "type": "integer",
+            "title": "Pending Product Applications"
+          }
+        },
+        "type": "object",
+        "required": [
+          "checked_at",
+          "billing_available",
+          "pending_usage_deliveries",
+          "oldest_pending_usage_at",
+          "active_reservations",
+          "pending_product_applications"
+        ],
+        "title": "RuntimeView"
+      },
+      "ScheduledChangeView": {
+        "properties": {
+          "plan_name": {
+            "type": "string",
+            "title": "Plan Name"
+          },
+          "effective_at": {
+            "type": "string",
+            "title": "Effective At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "plan_name",
+          "effective_at"
+        ],
+        "title": "ScheduledChangeView"
+      },
+      "SessionView": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "subject_id": {
+            "type": "string",
+            "title": "Subject Id"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expires At"
+          },
+          "csrf_token": {
+            "type": "string",
+            "title": "Csrf Token"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "subject_id",
+          "expires_at",
+          "csrf_token"
+        ],
+        "title": "SessionView"
+      },
+      "SubjectInput": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "name"
+        ],
+        "title": "SubjectInput"
+      },
+      "SubjectUpdate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "member_limit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Member Limit"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "SubjectUpdate"
+      },
+      "SubjectView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          },
+          "member_limit": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Member Limit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "state",
+          "role",
+          "member_limit"
+        ],
+        "title": "SubjectView"
+      },
+      "SubscriptionInput": {
+        "properties": {
+          "plan_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Plan Name"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan_name",
+          "request_id"
+        ],
+        "title": "SubscriptionInput"
+      },
+      "SubscriptionView": {
+        "properties": {
+          "subscriptionId": {
+            "type": "string",
+            "title": "Subscriptionid"
+          },
+          "bundleId": {
+            "type": "string",
+            "title": "Bundleid"
+          },
+          "accountId": {
+            "type": "string",
+            "title": "Accountid"
+          },
+          "productName": {
+            "type": "string",
+            "title": "Productname"
+          },
+          "planName": {
+            "type": "string",
+            "title": "Planname"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "billingPeriod": {
+            "type": "string",
+            "title": "Billingperiod"
+          },
+          "phaseType": {
+            "type": "string",
+            "title": "Phasetype"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "one_time",
+              "subscription",
+              "usage"
+            ],
+            "title": "Kind"
+          },
+          "plans_used": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Plans Used"
+          },
+          "cancelledDate": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cancelleddate"
+          },
+          "scheduled_changes": {
+            "items": {
+              "$ref": "#/components/schemas/ScheduledChangeView"
+            },
+            "type": "array",
+            "title": "Scheduled Changes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subscriptionId",
+          "bundleId",
+          "accountId",
+          "productName",
+          "planName",
+          "state",
+          "billingPeriod",
+          "phaseType",
+          "kind",
+          "plans_used",
+          "cancelledDate",
+          "scheduled_changes"
+        ],
+        "title": "SubscriptionView"
+      },
+      "SwitchInput": {
+        "properties": {
+          "subject_id": {
+            "type": "string",
+            "title": "Subject Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "subject_id"
+        ],
+        "title": "SwitchInput"
+      },
+      "TokenInput": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Label"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "days": {
+            "type": "integer",
+            "maximum": 365.0,
+            "minimum": 1.0,
+            "title": "Days"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "label",
+          "scopes",
+          "days"
+        ],
+        "title": "TokenInput"
+      },
+      "Transfer": {
+        "properties": {
+          "subject_id": {
+            "type": "string",
+            "title": "Subject Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "subject_id"
+        ],
+        "title": "Transfer"
+      },
+      "UsageBalanceView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "product_code": {
+            "type": "string",
+            "title": "Product Code"
+          },
+          "metric": {
+            "type": "string",
+            "title": "Metric"
+          },
+          "remaining": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remaining"
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Starts At"
+          },
+          "ends_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ends At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "product_code",
+          "metric",
+          "remaining",
+          "starts_at",
+          "ends_at"
+        ],
+        "title": "UsageBalanceView"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "PlatformBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      },
+      "PlatformSession": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "__Host-ssp-access"
+      }
+    }
+  }
+}
