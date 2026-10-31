@@ -93,3 +93,22 @@ export function refreshOAuthToken(options: {
     refresh_token: options.refreshToken,
   }, options.fetch ?? fetch);
 }
+
+export function revokeOAuthToken(options: {
+  baseUrl: string;
+  clientId: string;
+  token: string;
+  tokenTypeHint?: 'access_token' | 'refresh_token';
+  fetch?: typeof fetch;
+}) {
+  return (options.fetch ?? fetch)(new URL('/api/v1/oauth/revoke', options.baseUrl), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: options.clientId,
+      token: options.token,
+      ...(options.tokenTypeHint ? { token_type_hint: options.tokenTypeHint } : {}),
+    }),
+    cache: 'no-store',
+  });
+}

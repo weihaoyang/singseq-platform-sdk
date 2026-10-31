@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { buildAuthorizeUrl, createPkcePair, exchangeAuthorizationCode, refreshOAuthToken } from './oauth';
+import { buildAuthorizeUrl, createPkcePair, exchangeAuthorizationCode, refreshOAuthToken, revokeOAuthToken } from './oauth';
 
 describe('platform OAuth PKCE', () => {
   it('builds S256 authorization requests and a verifiable challenge', async () => {
@@ -23,11 +23,13 @@ describe('platform OAuth PKCE', () => {
     }) as typeof fetch;
     await exchangeAuthorizationCode({ baseUrl: 'https://platform.test', clientId: 'client', code: 'code', redirectUri: 'https://product.test/callback', verifier: 'verifier', fetch: fetchImpl });
     await refreshOAuthToken({ baseUrl: 'https://platform.test', clientId: 'client', refreshToken: 'refresh', fetch: fetchImpl });
+    await revokeOAuthToken({ baseUrl: 'https://platform.test', clientId: 'client', token: 'access', tokenTypeHint: 'access_token', fetch: fetchImpl });
     expect(calls.map(call => call.url)).toEqual([
-      'https://platform.test/api/v1/oauth/token', 'https://platform.test/api/v1/oauth/token',
+      'https://platform.test/api/v1/oauth/token', 'https://platform.test/api/v1/oauth/token', 'https://platform.test/api/v1/oauth/revoke',
     ]);
     expect(calls[0].headers.get('content-type')).toContain('application/x-www-form-urlencoded');
     expect(await calls[0].clone().text()).toContain('code_verifier=verifier');
     expect(await calls[1].clone().text()).toContain('grant_type=refresh_token');
+    expect(await calls[2].clone().text()).toContain('token_type_hint=access_token');
   });
 });

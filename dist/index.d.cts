@@ -5112,5 +5112,12 @@ declare function refreshOAuthToken(options: {
     refreshToken: string;
     fetch?: typeof fetch;
 }): Promise<OAuthToken>;
+declare function revokeOAuthToken(options: {
+    baseUrl: string;
+    clientId: string;
+    token: string;
+    tokenTypeHint?: 'access_token' | 'refresh_token';
+    fetch?: typeof fetch;
+}): Promise<Response>;
 
-export { type OAuthToken, type PkcePair, type PlatformClientOptions, buildAuthorizeUrl, type components, createPkcePair, createPlatformClient, exchangeAuthorizationCode, loginUrl, type operations, type paths, randomOAuthState, refreshOAuthToken };
+export { type OAuthToken, type PkcePair, type PlatformClientOptions, buildAuthorizeUrl, type components, createPkcePair, createPlatformClient, exchangeAuthorizationCode, loginUrl, type operations, type paths, randomOAuthState, refreshOAuthToken, revokeOAuthToken };

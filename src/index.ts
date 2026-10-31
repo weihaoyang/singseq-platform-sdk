@@ -5,6 +5,7 @@ export {
   exchangeAuthorizationCode,
   randomOAuthState,
   refreshOAuthToken,
+  revokeOAuthToken,
   type OAuthToken,
   type PkcePair,
 } from './oauth';
