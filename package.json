@@ -18,8 +18,7 @@
     "build": "tsup",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "generate": "openapi-typescript openapi.json -o src/schema.d.ts",
-    "prepare": "npm run build"
+    "generate": "openapi-typescript openapi.json -o src/schema.d.ts"
   },
   "keywords": ["singseq", "platform", "sdk", "oauth", "billing"],
   "license": "MIT",
