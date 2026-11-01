@@ -8,18 +8,18 @@ describe('platform OAuth PKCE', () => {
     expect(pair.challenge).toMatch(/^[A-Za-z0-9_-]{43}$/);
     const url = new URL(buildAuthorizeUrl({
       baseUrl: 'https://platform.test', clientId: 'client', redirectUri: 'https://product.test/callback',
-      scope: ['profile.read', 'usage.write'], state: 'state', codeChallenge: pair.challenge,
+      scope: ['account.read', 'usage.write'], state: 'state', codeChallenge: pair.challenge,
     }));
     expect(url.pathname).toBe('/api/v1/oauth/authorize');
     expect(url.searchParams.get('code_challenge_method')).toBe('S256');
-    expect(url.searchParams.get('scope')).toBe('profile.read usage.write');
+    expect(url.searchParams.get('scope')).toBe('account.read usage.write');
   });
 
   it('exchanges and refreshes delegated credentials using the platform form contract', async () => {
     const calls: Request[] = [];
     const fetchImpl = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       calls.push(new Request(input, init));
-      return Response.json({ access_token: 'access', refresh_token: 'refresh', token_type: 'Bearer', expires_in: 300, scope: 'profile.read' });
+      return Response.json({ access_token: 'access', refresh_token: 'refresh', token_type: 'Bearer', expires_in: 300, scope: 'account.read' });
     }) as typeof fetch;
     await exchangeAuthorizationCode({ baseUrl: 'https://platform.test', clientId: 'client', code: 'code', redirectUri: 'https://product.test/callback', verifier: 'verifier', fetch: fetchImpl });
     await refreshOAuthToken({ baseUrl: 'https://platform.test', clientId: 'client', refreshToken: 'refresh', fetch: fetchImpl });
